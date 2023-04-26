@@ -35,18 +35,36 @@ $(document).ready(function()
     });
     
     //зняття галочки із загального checkbox, якщо хоч один checkbox не позначений
-    $('input[type=checkbox].control-input').change(function() {
-        if(!$(this).prop('checked'))
+    $('input[type=checkbox].control-input').change(function()
+    {
+        if($(this).prop('checked'))
+        {     
+            
+            let checkedAll = true;
+            $('tbody input[type=checkbox].control-input').each(function()
+            {
+                if(!$(this).prop('checked'))
+                {
+                    checkedAll = false;
+                }
+            });            
+            
+            if(checkedAll)
+            {
+                $('#all-items').prop('checked', true);
+            }
+        }
+        else
         {
             $('#all-items').prop('checked', false);
         }
-    });
-    
+    });    
     
     $('.user-group-act-add').click(function(){
         //очистка форми перед заповненням
         $('#user_info')[0].reset();
         
+        $('#UserModalLabel').empty().append('Add user');
         $('#user_id').val('');
         $('#user_act').val('add');
     });
@@ -101,8 +119,7 @@ $(document).ready(function()
                         data: data,
                         success: function(data)
                         {
-                            //$('#text').addClass('alert alert-info').append(data);
-                            $('#text').empty();
+                            $('#text').removeClass().empty();
                             const user_data = JSON.parse(data);
                             
                             if(user_data.error == null || user_data.error == undefined)
@@ -180,7 +197,7 @@ function sentUserData()
 
             const user_data = JSON.parse(data);
             
-            $('#text').empty();
+            $('#text').removeClass().empty();
             
             if(user_data.error == null || user_data.error == undefined)
             {
@@ -283,7 +300,8 @@ function getUserData(id)
             //console.log(user_data);
             
             if(user_data.error == null || user_data.error == undefined)
-            {
+            {   
+                $('#UserModalLabel').empty().append('Edit user');
                 fillUserData(user_data);                
             }
             else
@@ -326,7 +344,7 @@ function myConfirm()
     
     if(myAction === 'del')
     {
-        //dellUser(userId);
+        dellUser(userId);
     }
 }
 

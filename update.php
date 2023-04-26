@@ -7,6 +7,7 @@ $user = new CController();
 $params = array();
 parse_str($_POST['all_user_data'], $params);
 
+$params['first-name'] = trim($params['first-name']);
 if(empty($params['first-name']))
 {
     $response['error']['code'] = 2;
@@ -14,6 +15,7 @@ if(empty($params['first-name']))
     echo json_encode($response);
     die();
 }
+$params['last-name'] = trim($params['last-name']);
 if(empty($params['last-name']))
 {
     $response['error']['code'] = 2;

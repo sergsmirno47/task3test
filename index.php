@@ -34,17 +34,19 @@ $arResult = $users -> ShowUsers();
             <div class="e-panel card">
               <div class="card-body">              
               
-                <div class="card col-md-2 mt-100" style="margin: 20px 0; padding: 20px;">
-                    <button type="button" class="user-group-act-add btn btn-info" style="margin-bottom: 10px;" data-toggle="modal" data-target="#user-form-modal">Add user</button>
-                    
-                    <select name="user-group-act-select" class="custom-select mr-sm-2 user-group-act-select" style="margin-bottom: 10px;">
-                        <option selected > -Please Select- </option>
-                        <option value="1" >Set active</option>
-                        <option value="2" >Set not active</option>
-                        <option value="3" >Delete</option>
-                    </select>
+                <div class="card col-md-4 mt-100" style="margin: 20px 0; padding: 20px;">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="user-group-act-add btn btn-info" style="margin-bottom: 10px;" data-toggle="modal" data-target="#user-form-modal">Add user</button>
                         
-                    <button type="button" class="btn btn-success user-group-act-ok">OK</button>
+                        <select name="user-group-act-select" class="custom-select mr-sm-2 user-group-act-select" style="margin-bottom: 10px; margin-right: 0 !important;">
+                            <option selected > -Please Select- </option>
+                            <option value="1" >Set active</option>
+                            <option value="2" >Set not active</option>
+                            <option value="3" >Delete</option>
+                        </select>
+                            
+                        <button type="button" class="btn btn-success user-group-act-ok" style="margin-bottom: 10px;">OK</button>
+                    </div>
                 </div>              
               
                 <div class="card-title">
@@ -100,17 +102,19 @@ $arResult = $users -> ShowUsers();
                   </div>
                 </div>                
                                 
-                <div class="card col-md-2 mt-100" style="margin: 20px 0; padding: 20px;">
-                    <button type="button" class="user-group-act-add btn btn-info" style="margin-bottom: 10px;" data-toggle="modal" data-target="#user-form-modal">Add user</button>
-                    
-                    <select name="user-group-act-select" class="user-group-act-select custom-select mr-sm-2" style="margin-bottom: 10px;">
-                        <option selected > -Please Select- </option>
-                        <option value="1" >Set active</option>
-                        <option value="2" >Set not active</option>
-                        <option value="3" >Delete</option>
-                    </select>
+                <div class="card col-md-4 mt-100" style="margin: 20px 0; padding: 20px;">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="user-group-act-add btn btn-info" data-toggle="modal" data-target="#user-form-modal">Add user</button>
                         
-                    <button type="button" class="btn btn-success user-group-act-ok">OK</button>
+                        <select name="user-group-act-select" class="user-group-act-select custom-select mr-sm-2" style="margin-right: 0 !important;">
+                            <option selected > -Please Select- </option>
+                            <option value="1" >Set active</option>
+                            <option value="2" >Set not active</option>
+                            <option value="3" >Delete</option>
+                        </select>
+                            
+                        <button type="button" class="btn btn-success user-group-act-ok">OK</button>
+                    </div>
                 </div>                
                 
               </div>
