@@ -18,7 +18,7 @@ $(document).ready(function()
         $("#confirm").css("display", "none");
     });
     
-    //натиснув на загальний checkbox і всі стали обрані, і навпаки
+    //РЅР°С‚РёСЃРЅСѓРІ РЅР° Р·Р°РіР°Р»СЊРЅРёР№ checkbox С– РІСЃС– СЃС‚Р°Р»Рё РѕР±СЂР°РЅС–, С– РЅР°РІРїР°РєРё
     $('#all-items').click(function(){
         if($("#all-items").prop('checked'))
         {
@@ -34,7 +34,7 @@ $(document).ready(function()
         }
     });
     
-    //зняття галочки із загального checkbox, якщо хоч один checkbox не позначений
+    //Р·РЅСЏС‚С‚СЏ РіР°Р»РѕС‡РєРё С–Р· Р·Р°РіР°Р»СЊРЅРѕРіРѕ checkbox, СЏРєС‰Рѕ С…РѕС‡ РѕРґРёРЅ checkbox РЅРµ РїРѕР·РЅР°С‡РµРЅРёР№
     $('input[type=checkbox].control-input').change(function() {
         if(!$(this).prop('checked'))
         {
@@ -44,7 +44,7 @@ $(document).ready(function()
     
     
     $('.user-group-act-add').click(function(){
-        //очистка форми перед заповненням
+        //РѕС‡РёСЃС‚РєР° С„РѕСЂРјРё РїРµСЂРµРґ Р·Р°РїРѕРІРЅРµРЅРЅСЏРј
         $('#user_info')[0].reset();
         
         $('#user_id').val('');
@@ -70,17 +70,17 @@ $(document).ready(function()
     });
     
     $('.user-group-act-ok').click(function() {
-        //отримання значення селект 1. Set active, 2. Set not active, 3. Delete
+        //РѕС‚СЂРёРјР°РЅРЅСЏ Р·РЅР°С‡РµРЅРЅСЏ СЃРµР»РµРєС‚ 1. Set active, 2. Set not active, 3. Delete
         let userStatus = $(this).parent('div').children('select').val();
-        //якщо значення не співпадає із встановленим,  або воно  просто не обране - помилка
+        //СЏРєС‰Рѕ Р·РЅР°С‡РµРЅРЅСЏ РЅРµ СЃРїС–РІРїР°РґР°С” С–Р· РІСЃС‚Р°РЅРѕРІР»РµРЅРёРј,  Р°Р±Рѕ РІРѕРЅРѕ  РїСЂРѕСЃС‚Рѕ РЅРµ РѕР±СЂР°РЅРµ - РїРѕРјРёР»РєР°
         if(userStatus == 1 || userStatus == 2 || userStatus == 3)
         {   
             let checkboxes = [];
             $('tbody input:checkbox:checked.control-input').each(function() {
-                //в масив checkboxes заношу ID обраних користувачів
+                //РІ РјР°СЃРёРІ checkboxes Р·Р°РЅРѕС€Сѓ ID РѕР±СЂР°РЅРёС… РєРѕСЂРёСЃС‚СѓРІР°С‡С–РІ
                 checkboxes.push($(this).attr('id-data'));
             });
-            //якщо не обраний ні один користувач - помилка
+            //СЏРєС‰Рѕ РЅРµ РѕР±СЂР°РЅРёР№ РЅС– РѕРґРёРЅ РєРѕСЂРёСЃС‚СѓРІР°С‡ - РїРѕРјРёР»РєР°
             if(checkboxes.length !== 0)
             {                
                 if(userStatus == 3)
@@ -111,7 +111,7 @@ $(document).ready(function()
                                 $('input[type=checkbox].control-input').each(function() { 
                                     this.checked = false; 
                                 });
-                                //змінюю статус активний/не активний в таблиці
+                                //Р·РјС–РЅСЋСЋ СЃС‚Р°С‚СѓСЃ Р°РєС‚РёРІРЅРёР№/РЅРµ Р°РєС‚РёРІРЅРёР№ РІ С‚Р°Р±Р»РёС†С–
                                 user_data.user.id.forEach(function(elem)
                                 {
                                     $('#user_row_'+elem).children('td').eq(3).empty().append('<i class="fa fa-circle '+(userStatus == 1?'':'not-')+'active-circle"></i>');
@@ -163,7 +163,7 @@ function myError(text)
 }
 
 function sentUserData()
-{   //отримую дані з  форми
+{   //РѕС‚СЂРёРјСѓСЋ РґР°РЅС– Р·  С„РѕСЂРјРё
     const userDataForSend = $('#user_info').serialize();   
     //
     const data = {
@@ -187,7 +187,7 @@ function sentUserData()
                 if($('#user_act').val() === 'upd')
                 {
                     $('#text').addClass('alert alert-success').append('User updated');
-                    //змінюю дані в таблиці після оновлення користувача
+                    //Р·РјС–РЅСЋСЋ РґР°РЅС– РІ С‚Р°Р±Р»РёС†С– РїС–СЃР»СЏ РѕРЅРѕРІР»РµРЅРЅСЏ РєРѕСЂРёСЃС‚СѓРІР°С‡Р°
                     $('#user_row_'+user_data.user.id).children('td').eq(1).empty().append(user_data.user.first_name+' '+user_data.user.last_name);
                     $('#user_row_'+user_data.user.id).children('td').eq(2).empty().append('<span>'+(user_data.user.role == 1?'Admin':'User')+'</span>');
                     $('#user_row_'+user_data.user.id).children('td').eq(3).empty().append('<i class="fa fa-circle '+(user_data.user.status == 1?'':'not-')+'active-circle"></i>');                 
@@ -195,7 +195,7 @@ function sentUserData()
                 else if($('#user_act').val() === 'add')
                 {
                     $('#text').addClass('alert alert-success').append('User added');
-                    //додаю новий запис із користувачем
+                    //РґРѕРґР°СЋ РЅРѕРІРёР№ Р·Р°РїРёСЃ С–Р· РєРѕСЂРёСЃС‚СѓРІР°С‡РµРј
                     $('table > tbody').prepend('<tr id="user_row_'+user_data.user.id+'">'+
                                                   '<td class="align-middle">'+
                                                     '<div class="custom-control custom-control-inline custom-checkbox custom-control-nameless m-0 align-top">'+
@@ -240,7 +240,7 @@ function sentUserData()
     });
 }
 
-//заповнюю форму
+//Р·Р°РїРѕРІРЅСЋСЋ С„РѕСЂРјСѓ
 function fillUserData(user_data)
 {    
     $('#user_id').val(user_data.user.id);
