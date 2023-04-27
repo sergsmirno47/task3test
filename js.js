@@ -64,9 +64,9 @@ $(document).ready(function()
         //очистка форми перед заповненням
         $('#user_info')[0].reset();
         $('#user_info .input-row .toggle').removeClass().addClass('toggle');
-        $('#user_info .input-row .toggle .label').empty().append('not');
+        $('#user_info .input-row .toggle .label').text('not');
         
-        $('#UserModalLabel').empty().append('Add user');
+        $('#UserModalLabel').text('Add user');
         $('#user_id').val('');
         $('#user_act').val('add');
     });
@@ -121,34 +121,34 @@ $(document).ready(function()
                         data: data,
                         success: function(data)
                         {
-                            $('#text').removeClass().empty();
+                            $('#text').removeClass();
                             const user_data = JSON.parse(data);
                             
                             if(user_data.error == null || user_data.error == undefined)
                             {                                
-                                $('#text').addClass('alert alert-success').append('Users updated');
+                                $('#text').addClass('alert alert-success').text('Users updated');
                                 $('input[type=checkbox].control-input').each(function() { 
                                     this.checked = false; 
                                 });
                                 //змінюю статус активний/не активний в таблиці
                                 user_data.user.id.forEach(function(elem)
                                 {
-                                    $('#user_row_'+elem).children('td').eq(3).empty().append('<i class="fa fa-circle '+(userStatus == 1?'':'not-')+'active-circle"></i>');
+                                    $('#user_row_'+elem).children('td').eq(3).text('<i class="fa fa-circle '+(userStatus == 1?'':'not-')+'active-circle"></i>');
                                 });
                             }
                             else
                             {
                                 if(user_data.error.code == 1)
                                 {
-                                    $('#text').addClass('alert alert-danger').append(user_data.error.message);                    
+                                    $('#text').addClass('alert alert-danger').text(user_data.error.message);                    
                                 }
                                 else if(user_data.error.code == 2)
                                 {
-                                    $('#text').addClass('alert alert-warning').append(user_data.error.message);
+                                    $('#text').addClass('alert alert-warning').text(user_data.error.message);
                                 }
                                 else
                                 {
-                                    $('#text').addClass('alert alert-info').append(user_data.error.message);
+                                    $('#text').addClass('alert alert-info').text(user_data.error.message);
                                 }
                                 return false;
                             }//*/
@@ -177,8 +177,7 @@ $(document).ready(function()
 function myError(text)
 {
     $("#confirm_group").css("display", "block");
-    $('#confirm_group_text').empty();
-    $('#confirm_group_text').append(text);
+    $('#confirm_group_text').text(text);
 }
 
 function sentUserData()
@@ -211,15 +210,15 @@ function sentUserData()
                                 
                 if($('#user_act').val() === 'upd')
                 {
-                    $('#text').addClass('alert alert-success').append('User updated');
+                    $('#text').addClass('alert alert-success').text('User updated');
                     //змінюю дані в таблиці після оновлення користувача
-                    $('#user_row_'+user_data.user.id).children('td').eq(1).empty().append(user_data.user.first_name+' '+user_data.user.last_name);
+                    $('#user_row_'+user_data.user.id).children('td').eq(1).empty().text(user_data.user.first_name+' '+user_data.user.last_name);
                     $('#user_row_'+user_data.user.id).children('td').eq(2).empty().append('<span>'+(user_data.user.role == 1?'Admin':'User')+'</span>');
                     $('#user_row_'+user_data.user.id).children('td').eq(3).empty().append('<i class="fa fa-circle '+(user_data.user.status == 1?'':'not-')+'active-circle"></i>');                 
                 }
                 else if($('#user_act').val() === 'add')
                 {
-                    $('#text').addClass('alert alert-success').append('User added');
+                    $('#text').addClass('alert alert-success').text('User added');
                     //додаю новий запис із користувачем
                     $('table > tbody').prepend('<tr id="user_row_'+user_data.user.id+'">'+
                                                   '<td class="align-middle">'+
@@ -251,15 +250,15 @@ function sentUserData()
             {
                 if(user_data.error.code == 1)
                 {
-                    $('#text-form-error').addClass('alert alert-danger').append(user_data.error.message);                    
+                    $('#text-form-error').addClass('alert alert-danger').text(user_data.error.message);                    
                 }
                 else if(user_data.error.code == 2)
                 {
-                    $('#text-form-error').addClass('alert alert-warning').append(user_data.error.message);
+                    $('#text-form-error').addClass('alert alert-warning').text(user_data.error.message);
                 }
                 else
                 {
-                    $('#text-form-error').addClass('alert alert-info').append(user_data.error.message);
+                    $('#text-form-error').addClass('alert alert-info').text(user_data.error.message);
                 }
             }//*/
             
@@ -311,22 +310,22 @@ function getUserData(id)
             
             if(user_data.error == null || user_data.error == undefined)
             {   
-                $('#UserModalLabel').empty().append('Edit user');
+                $('#UserModalLabel').text('Edit user');
                 fillUserData(user_data);                
             }
             else
             {
                 if(user_data.error.code == 1)
                 {
-                    $('#text').addClass('alert alert-danger').append(user_data.error.message);                    
+                    $('#text').addClass('alert alert-danger').text(user_data.error.message);                    
                 }
                 else if(user_data.error.code == 2)
                 {
-                    $('#text').addClass('alert alert-warning').append(user_data.error.message);
+                    $('#text').addClass('alert alert-warning').text(user_data.error.message);
                 }
                 else
                 {
-                    $('#text').addClass('alert alert-info').append(user_data.error.message);
+                    $('#text').addClass('alert alert-info').text(user_data.error.message);
                 }
                 return false;
             }//*/
@@ -376,8 +375,6 @@ function dellUser(id)
             const all_data = JSON.parse(data);
             //console.log(all_data);
             
-            $('#text').empty();
-            
             if(all_data.error == null || all_data.error == undefined)
             {
                 if(Array.isArray(all_data.user.id))
@@ -386,11 +383,11 @@ function dellUser(id)
                     {
                         $('#user_row_'+elem).remove();
                     });
-                    $('#text').addClass('alert alert-success').append('Users deleted');
+                    $('#text').addClass('alert alert-success').text('Users deleted');
                 }
                 else
                 {
-                    $('#text').addClass('alert alert-success').append('User deleted');
+                    $('#text').addClass('alert alert-success').text('User deleted');
                     $('#user_row_'+all_data.user.id).remove();
                 }
             }
@@ -398,16 +395,16 @@ function dellUser(id)
             {
                 if(all_data.error.code == 1)
                 {
-                    $('#text').addClass('alert alert-danger').append(all_data.error.message);
+                    $('#text').addClass('alert alert-danger').text(all_data.error.message);
                     
                 }
                 else if(all_data.error.code == 2)
                 {
-                    $('#text').addClass('alert alert-warning').append(all_data.error.message);
+                    $('#text').addClass('alert alert-warning').text(all_data.error.message);
                 }
                 else
                 {
-                    $('#text').addClass('alert alert-info').append(all_data.error.message);
+                    $('#text').addClass('alert alert-info').text(all_data.error.message);
                 }
             }//*/
         }
