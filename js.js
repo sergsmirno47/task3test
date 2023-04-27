@@ -63,6 +63,8 @@ $(document).ready(function()
     $('.user-group-act-add').click(function(){
         //очистка форми перед заповненням
         $('#user_info')[0].reset();
+        $('#user_info .input-row .toggle').removeClass().addClass('toggle');
+        $('#user_info .input-row .toggle .label').empty().append('not');
         
         $('#UserModalLabel').empty().append('Add user');
         $('#user_id').val('');
@@ -194,11 +196,11 @@ function sentUserData()
         dataType: 'text',
         data: data,
         success: function(data){
-            $('#text-form-error').addClass('alert alert-info').append(data);
+            $('#text').addClass('alert alert-info').append(data);
             //console.log(data);
 
             const user_data = JSON.parse(data);
-            //console.log(user_data);
+            console.log(user_data);
             
             $('#text').removeClass().empty();
             $('#text-form-error').removeClass().empty();
