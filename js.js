@@ -198,7 +198,7 @@ function sentUserData()
             //console.log(data);
 
             const user_data = JSON.parse(data);
-            console.log(user_data);
+            //console.log(user_data);
             
             $('#text').removeClass().empty();
             $('#text-form-error').removeClass().empty();
