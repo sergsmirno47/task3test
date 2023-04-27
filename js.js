@@ -6,7 +6,7 @@ $(document).ready(function()
         if ($(this).parent().hasClass('on')) {
             $(this).parent().children('.label').text('active')
         } else {
-            $(this).parent().children('.label').text('not')
+            $(this).parent().children('.label').text('not active')
         }
     });
     
@@ -35,60 +35,24 @@ $(document).ready(function()
     });
     
     //зняття галочки із загального checkbox, якщо хоч один checkbox не позначений
-    $('input[type=checkbox].control-input').change(function()
+    $('tbody input[type=checkbox].control-input').change(function()
     {
-        if($(this).prop('checked'))
-        {     
-            
-            let checkedAll = true;
-            $('tbody input[type=checkbox].control-input').each(function()
-            {
-                if(!$(this).prop('checked'))
-                {
-                    checkedAll = false;
-                }
-            });            
-            
-            if(checkedAll)
-            {
-                $('#all-items').prop('checked', true);
-            }
-        }
-        else
-        {
-            $('#all-items').prop('checked', false);
-        }
+        let el = $(this);
+        //console.log(el);
+        checkboxOpt(el);        
     });    
     
     $('.user-group-act-add').click(function(){
         //очистка форми перед заповненням
         $('#user_info')[0].reset();
         $('#user_info .input-row .toggle').removeClass().addClass('toggle');
-        $('#user_info .input-row .toggle .label').text('not');
+        $('#user_info .input-row .toggle .label').text('not active');
         
         $('#UserModalLabel').text('Add user');
         $('#user_id').val('');
         $('#user_act').val('add');
     });
-    
-    $('#confirm_group button').click(function() {
-        $("#confirm_group").css("display", "none");
-    });
-    $(document).keyup(function(e)
-    {
-        if (e.key === "Escape")
-        {
-            if($("#confirm").css("display") != "none")
-            {
-                $("#confirm").css("display", "none");
-            }
-            if($("#confirm_group").css("display") != "none")
-            {
-                $("#confirm_group").css("display", "none");
-            }
-        }
-    });
-    
+        
     $('.user-group-act-ok').click(function() {
         //отримання значення селект 1. Set active, 2. Set not active, 3. Delete
         let userStatus = $(this).parent('div').children('select').val();
@@ -133,7 +97,7 @@ $(document).ready(function()
                                 //змінюю статус активний/не активний в таблиці
                                 user_data.user.id.forEach(function(elem)
                                 {
-                                    $('#user_row_'+elem).children('td').eq(3).text('<i class="fa fa-circle '+(userStatus == 1?'':'not-')+'active-circle"></i>');
+                                    $('#user_row_'+elem).children('td').eq(3).empty().append('<i class="fa fa-circle '+(userStatus == 1?'':'not-')+'active-circle"></i>');
                                 });
                             }
                             else
@@ -173,10 +137,36 @@ $(document).ready(function()
     
 });
 
+function checkboxOpt(el)
+{
+    //console.log(el.prop('checked'));
+    if(el.prop('checked'))
+    {
+        //console.log(el.prop('checked'));
+        let checkedAll = true;
+        $('tbody input[type=checkbox].control-input').each(function()
+        {
+            if(!$(this).prop('checked'))
+            {
+                checkedAll = false;
+            }
+        });            
+        
+        if(checkedAll)
+        {
+            $('#all-items').prop('checked', true);
+        }
+    }
+    else
+    {
+        //console.log(el.prop('checked'));
+        $('#all-items').prop('checked', false);
+    }
+}
 
 function myError(text)
 {
-    $("#confirm_group").css("display", "block");
+    $("#confirm_group").modal('show');
     $('#confirm_group_text').text(text);
 }
 
@@ -195,14 +185,14 @@ function sentUserData()
         dataType: 'text',
         data: data,
         success: function(data){
-            $('#text').addClass('alert alert-info').append(data);
+            //$('#text').addClass('alert alert-info').append(data);
             //console.log(data);
 
             const user_data = JSON.parse(data);
-            console.log(user_data);
+            //console.log(user_data);
             
-            $('#text').removeClass().empty();
-            $('#text-form-error').removeClass().empty();
+            $('#text').removeClass();
+            $('#text-form-error').removeClass();
             
             if(user_data.error == null || user_data.error == undefined)
             {
@@ -212,7 +202,7 @@ function sentUserData()
                 {
                     $('#text').addClass('alert alert-success').text('User updated');
                     //змінюю дані в таблиці після оновлення користувача
-                    $('#user_row_'+user_data.user.id).children('td').eq(1).empty().text(user_data.user.first_name+' '+user_data.user.last_name);
+                    $('#user_row_'+user_data.user.id).children('td').eq(1).text(user_data.user.first_name+' '+user_data.user.last_name);
                     $('#user_row_'+user_data.user.id).children('td').eq(2).empty().append('<span>'+(user_data.user.role == 1?'Admin':'User')+'</span>');
                     $('#user_row_'+user_data.user.id).children('td').eq(3).empty().append('<i class="fa fa-circle '+(user_data.user.status == 1?'':'not-')+'active-circle"></i>');                 
                 }
@@ -220,7 +210,7 @@ function sentUserData()
                 {
                     $('#text').addClass('alert alert-success').text('User added');
                     //додаю новий запис із користувачем
-                    $('table > tbody').prepend('<tr id="user_row_'+user_data.user.id+'">'+
+                    $('table > tbody').append('<tr id="user_row_'+user_data.user.id+'">'+
                                                   '<td class="align-middle">'+
                                                     '<div class="custom-control custom-control-inline custom-checkbox custom-control-nameless m-0 align-top">'+
                                                       '<input type="checkbox" class="control-input" id="item-'+user_data.user.id+'" id-data="'+user_data.user.id+'" />'+
@@ -236,6 +226,9 @@ function sentUserData()
                                                     '</div>'+
                                                   '</td>'+
                                                 '</tr>');
+                    
+                    $('.container').on('click', '#item-'+user_data.user.id, function(){checkboxOpt($('#item-'+user_data.user.id))});
+                    
                 }
                 else
                 {
@@ -284,7 +277,7 @@ function fillUserData(user_data)
     else
     {
         $('.toggle input[type="checkbox"]').parent().removeClass().addClass('toggle');
-        $('.toggle input[type="checkbox"]').parent().children('.label').text('not');
+        $('.toggle input[type="checkbox"]').parent().children('.label').text('not active');
         $('#toggle_checkbox').prop('checked', false);
     }
     
@@ -338,15 +331,13 @@ function setData(id, act)
     $('#user_id').val(id);
     $('#user_act').val(act);
     
-    $('#text').removeClass().empty();
-    $('#confirm_text').empty();
-    $("#confirm").css("display", "block");
-    $('#confirm_text').append('Are you sure want to delete??');
+    $("#confirm").modal('show');
+    $('#confirm_text').text('Delete user - '+$('#user_row_'+id).children('td').eq(1).text()+'??');
 }
 
 function myConfirm()
 {   
-    $("#confirm").css("display", "none");
+    $("#confirm").modal('hide');
     
     let myAction = $('#user_act').val();
     let userId = $('#user_id').val();
@@ -406,7 +397,7 @@ function dellUser(id)
                 {
                     $('#text').addClass('alert alert-info').text(all_data.error.message);
                 }
-            }//*/
+            }//*//*
         }
     });
 }
