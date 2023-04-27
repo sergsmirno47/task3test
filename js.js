@@ -181,7 +181,8 @@ function myError(text)
 
 function sentUserData()
 {   //отримую дані з  форми
-    const userDataForSend = $('#user_info').serialize();   
+    const userDataForSend = $('#user_info').serialize();
+    //console.log(userDataForSend);
     //
     const data = {
         all_user_data: userDataForSend
@@ -193,14 +194,19 @@ function sentUserData()
         dataType: 'text',
         data: data,
         success: function(data){
-            //$('#text').addClass('alert alert-info').append(data);
+            $('#text-form-error').addClass('alert alert-info').append(data);
+            //console.log(data);
 
             const user_data = JSON.parse(data);
+            console.log(user_data);
             
             $('#text').removeClass().empty();
+            $('#text-form-error').removeClass().empty();
             
             if(user_data.error == null || user_data.error == undefined)
             {
+                $('#user-form-modal').modal('hide');
+                                
                 if($('#user_act').val() === 'upd')
                 {
                     $('#text').addClass('alert alert-success').append('User updated');
@@ -234,25 +240,27 @@ function sentUserData()
                 {
                     myError('Something wrong((');
                 }
-                //*//*
+                
+                $('#user_id').val('');
+                $('#user_act').val('');
+                
             }
             else
             {
                 if(user_data.error.code == 1)
                 {
-                    $('#text').addClass('alert alert-danger').append(user_data.error.message);                    
+                    $('#text-form-error').addClass('alert alert-danger').append(user_data.error.message);                    
                 }
                 else if(user_data.error.code == 2)
                 {
-                    $('#text').addClass('alert alert-warning').append(user_data.error.message);
+                    $('#text-form-error').addClass('alert alert-warning').append(user_data.error.message);
                 }
                 else
                 {
-                    $('#text').addClass('alert alert-info').append(user_data.error.message);
+                    $('#text-form-error').addClass('alert alert-info').append(user_data.error.message);
                 }
             }//*/
-            $('#user_id').val('');
-            $('#user_act').val('');
+            
         }
     });
 }

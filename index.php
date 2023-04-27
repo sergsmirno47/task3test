@@ -24,7 +24,7 @@ $arResult = $users -> ShowUsers();
   <link href="styles.css" rel="stylesheet">
   <link href="togo.css" rel="stylesheet">
   <div class="container">
-    
+  
     <div id="text" class="alert" role="alert"></div>
   
     <div class="row flex-lg-nowrap">
@@ -153,21 +153,22 @@ $arResult = $users -> ShowUsers();
                 </div>
                 
                 <label class="mr-sm-2" for="inlineFormCustomSelect">Role</label>
-                    <select name="user-role" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                <select name="user-role" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
                     <option value="2" selected >User</option>
-                    <option value="1">Admin</option>
-                                       
+                    <option value="1">Admin</option>                                       
                 </select>
                 
                 <input id="user_id" type="hidden" name="user-id-hidd" value="" />
                 <input id="user_act" type="hidden" name="user-act-hidd" value="" />                
                 
-              </form>              
+              </form>
+              
+              <div id="text-form-error" class="alert" style="margin-top: 15px;"></div>
               
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button onclick="sentUserData()" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+              <button onclick="sentUserData()" type="button" class="btn btn-primary">Save</button>
             </div>
           </div>
         </div>
