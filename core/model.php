@@ -36,7 +36,7 @@ class CModel {
     
     public function ShowUsers()
     {
-        $sql = "SELECT * FROM users ORDER BY id DESC";
+        $sql = "SELECT * FROM users ORDER BY id ASC";
         $res = mysqli_query($this->link, $sql);
         
         while($arRes = mysqli_fetch_assoc($res)){
@@ -47,18 +47,19 @@ class CModel {
     }
     
     public function DelUsers($arrId)
-    {        
+    {   
+        
         if(is_array($arrId))
         {
             $arrId = implode(',', $arrId);
-            $sql = "DELETE FROM users WHERE id IN ($arrId)";
-            $res = mysqli_query($this->link, $sql);
         }
         else
         {
-            $sql = "DELETE FROM users WHERE id = ".intval($arrId)." LIMIT 1";
-            $res = mysqli_query($this->link, $sql);
+            $arrId = intval($arrId);
         }
+        $sql = "DELETE FROM users WHERE id IN ($arrId)";
+        //echo $sql; exit;
+        $res = mysqli_query($this->link, $sql);
         
         return $res;
     }
