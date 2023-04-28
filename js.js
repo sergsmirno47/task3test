@@ -69,7 +69,7 @@ $(document).ready(function()
             {                
                 if(userStatus == 3)
                 {
-                    dellUser(checkboxes);
+                    setData(checkboxes, 'del');
                 }
                 else if(userStatus == 2 || userStatus == 1)
                 {
@@ -132,9 +132,8 @@ $(document).ready(function()
         else
         {
             myError('Select action, please !!!');
-        } 
-    })
-    
+        }
+    });
 });
 
 function checkboxOpt(el)
@@ -332,7 +331,20 @@ function setData(id, act)
     $('#user_act').val(act);
     
     $("#confirm").modal('show');
-    $('#confirm_text').text('Delete user - '+$('#user_row_'+id).children('td').eq(1).text()+'??');
+    
+    if(typeof id == 'string')
+    {
+        $('#confirm_text').text('Delete user - '+$('#user_row_'+id).children('td').eq(1).text()+'??');
+    }
+    else
+    {
+        let usersName = '';
+        id.forEach(element => {            
+            usersName += $('#user_row_'+element).children('td').eq(1).text() + ', ';
+        });
+        
+        $('#confirm_text').text('Delete users - '+usersName+'??');
+    }
 }
 
 function myConfirm()
@@ -341,6 +353,7 @@ function myConfirm()
     
     let myAction = $('#user_act').val();
     let userId = $('#user_id').val();
+    userId = userId.split(',');
     
     if(myAction === 'del')
     {
@@ -353,7 +366,7 @@ function dellUser(id)
     const data = {
         arrId: id
     };
-    //console.log(userId, myAction, id);
+    //console.log(id);
     
     $.ajax({
         url: 'del.php',
@@ -361,7 +374,7 @@ function dellUser(id)
         dataType: 'text',
         data: data,
         success: function(data){
-            //$('#text').addClass('alert alert-info').append(data);            
+            $('#text').addClass('alert alert-info').text(data);            
             
             const all_data = JSON.parse(data);
             //console.log(all_data);
@@ -397,7 +410,7 @@ function dellUser(id)
                 {
                     $('#text').addClass('alert alert-info').text(all_data.error.message);
                 }
-            }//*//*
+            }//*/
         }
     });
 }
