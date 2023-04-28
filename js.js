@@ -338,11 +338,10 @@ function setData(id, act)
     }
     else
     {
-        let usersName = '';
-        id.forEach(element => {            
-            usersName += $('#user_row_'+element).children('td').eq(1).text() + ', ';
+        let usersName = [];
+        id.forEach(element => {
+            usersName.push($('#user_row_'+element).children('td').eq(1).text());
         });
-        
         $('#confirm_text').text('Delete users - '+usersName+'??');
     }
 }
