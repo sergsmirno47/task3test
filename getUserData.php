@@ -13,7 +13,7 @@ if(empty($id))
     $response['error']['code'] = 2;
     $response['error']['message'] = 'ID is empty';
     echo json_encode($response);
-    die();
+    exit;
 }
 
 $arResult = $users -> GetUserData($id);
@@ -28,13 +28,12 @@ if($arResult)
     $response['user']['status'] = $arResult['status'];
     $response['user']['role'] = $arResult['role'];
     echo json_encode($response);
-    die();
+    exit;
 }
 else
 {
     $response['error']['code'] = 1;
     $response['error']['message'] = 'Cant find User((';
     echo json_encode($response);
-    die();
+    exit;
 }
-//*/

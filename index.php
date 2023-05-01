@@ -1,5 +1,4 @@
 <?php
-
 require_once 'core/cfg.php';
 
 $users = new CController();
@@ -17,7 +16,7 @@ $arResult = $users -> ShowUsers();
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js.js"></script>
+  <script src="js.js?t=<?= time()?>"></script>
 </head>
 <body>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -86,7 +85,7 @@ $arResult = $users -> ShowUsers();
                           <td class="text-center align-middle"><i class="fa fa-circle <?= $res['status'] == 1? '' : 'not-' ?>active-circle"></i></td>
                           <td class="text-center align-middle">
                             <div class="btn-group align-top">
-                              <button onclick="getUserData('<?= $res['id'] ?>')" class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" data-target="#user-form-modal">Edit</button>
+                              <button onclick="getUserData('<?= $res['id'] ?>')" class="btn btn-sm btn-outline-secondary badge" type="button">Edit</button>
                               <button onclick="setData('<?= $res['id'] ?>','del')" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>
                             </div>
                           </td>
@@ -145,10 +144,11 @@ $arResult = $users -> ShowUsers();
                 </div>                
                 
                 <div class="input-row">
+                    <p style="margin-bottom: 0;"><label for="user-status" class="col-form-label">User status</label></p>
                     <div class="toggle">
                         <input name="user-status" id="toggle_checkbox" type="checkbox">
                         <span class="slider"></span>
-                        <span class="label">not</span>
+                        <span class="label" style="width: 75px;">not active</span>
                     </div>
                 </div>
                 
@@ -174,7 +174,7 @@ $arResult = $users -> ShowUsers();
         </div>
       </div>
       
-    <div id="confirm" class="modal" tabindex="-1" role="dialog">
+    <div id="confirm" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -194,18 +194,26 @@ $arResult = $users -> ShowUsers();
       </div>
     </div>
     
-    <div id="confirm_group" class="modal" tabindex="-1">
-      <div class="modal-dialog">
+    
+    <div id="confirm_group" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="modal-body">
             <p id="confirm_group_text" class="alert alert-danger"></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary">Ok</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
+    
     
     </div>
   </div>

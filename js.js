@@ -19,19 +19,8 @@ $(document).ready(function()
     });
     
     //натиснув на загальний checkbox і всі стали обрані, і навпаки
-    $('#all-items').click(function(){
-        if($("#all-items").prop('checked'))
-        {
-            $('input[type=checkbox].control-input').each(function() { 
-                this.checked = true; 
-            });
-        }
-        else
-        {
-            $('input[type=checkbox].control-input').each(function() { 
-                this.checked = false;
-            });
-        }
+    $('#all-items').click(function(){        
+        checkAll();
     });
     
     //зняття галочки із загального checkbox, якщо хоч один checkbox не позначений
@@ -39,12 +28,13 @@ $(document).ready(function()
     {
         let el = $(this);
         //console.log(el);
-        checkboxOpt(el);        
+        checkboxOpt(el);
     });    
     
     $('.user-group-act-add').click(function(){
         //очистка форми перед заповненням
         $('#user_info')[0].reset();
+        $('#text-form-error').removeClass().empty();
         $('#user_info .input-row .toggle').removeClass().addClass('toggle');
         $('#user_info .input-row .toggle .label').text('not active');
         
@@ -58,7 +48,7 @@ $(document).ready(function()
         let userStatus = $(this).parent('div').children('select').val();
         //якщо значення не співпадає із встановленим,  або воно  просто не обране - помилка
         if(userStatus == 1 || userStatus == 2 || userStatus == 3)
-        {   
+        {
             let checkboxes = [];
             $('tbody input:checkbox:checked.control-input').each(function() {
                 //в масив checkboxes заношу ID обраних користувачів
@@ -85,6 +75,8 @@ $(document).ready(function()
                         data: data,
                         success: function(data)
                         {
+                            $('#text').addClass('alert alert-info').append(data);
+                            
                             $('#text').removeClass();
                             const user_data = JSON.parse(data);
                             
@@ -95,33 +87,21 @@ $(document).ready(function()
                                     this.checked = false; 
                                 });
                                 //змінюю статус активний/не активний в таблиці
-                                user_data.user.id.forEach(function(elem)
+                                checkboxes.forEach(function(elem)
                                 {
                                     $('#user_row_'+elem).children('td').eq(3).empty().append('<i class="fa fa-circle '+(userStatus == 1?'':'not-')+'active-circle"></i>');
                                 });
                             }
                             else
                             {
-                                if(user_data.error.code == 1)
-                                {
-                                    $('#text').addClass('alert alert-danger').text(user_data.error.message);                    
-                                }
-                                else if(user_data.error.code == 2)
-                                {
-                                    $('#text').addClass('alert alert-warning').text(user_data.error.message);
-                                }
-                                else
-                                {
-                                    $('#text').addClass('alert alert-info').text(user_data.error.message);
-                                }
-                                return false;
+                                myError(user_data.error.message); 
                             }//*/
                         }
                     });
                 }
                 else
                 {
-                    myError('Something wrong((');
+                    myError('Action is wrong((');
                 }
             }
             else
@@ -134,14 +114,18 @@ $(document).ready(function()
             myError('Select action, please !!!');
         }
     });
+    
 });
+
+function checkAll()
+{
+    $('input[type=checkbox].control-input').prop('checked', $('#all-items').prop('checked'));
+}
 
 function checkboxOpt(el)
 {
-    //console.log(el.prop('checked'));
     if(el.prop('checked'))
     {
-        //console.log(el.prop('checked'));
         let checkedAll = true;
         $('tbody input[type=checkbox].control-input').each(function()
         {
@@ -158,7 +142,6 @@ function checkboxOpt(el)
     }
     else
     {
-        //console.log(el.prop('checked'));
         $('#all-items').prop('checked', false);
     }
 }
@@ -172,8 +155,7 @@ function myError(text)
 function sentUserData()
 {   //отримую дані з  форми
     const userDataForSend = $('#user_info').serialize();
-    //console.log(userDataForSend);
-    //
+    
     const data = {
         all_user_data: userDataForSend
     };
@@ -226,6 +208,7 @@ function sentUserData()
                                                   '</td>'+
                                                 '</tr>');
                     
+                    checkAll();
                     $('.container').on('click', '#item-'+user_data.user.id, function(){checkboxOpt($('#item-'+user_data.user.id))});
                     
                 }
@@ -252,8 +235,7 @@ function sentUserData()
                 {
                     $('#text-form-error').addClass('alert alert-info').text(user_data.error.message);
                 }
-            }//*/
-            
+            }//*/            
         }
     });
 }
@@ -301,49 +283,51 @@ function getUserData(id)
             //console.log(user_data);
             
             if(user_data.error == null || user_data.error == undefined)
-            {   
+            {
+                $('#text-form-error').removeClass().empty();
                 $('#UserModalLabel').text('Edit user');
+                $('#user-form-modal').modal('show');
                 fillUserData(user_data);                
             }
             else
             {
-                if(user_data.error.code == 1)
-                {
-                    $('#text').addClass('alert alert-danger').text(user_data.error.message);                    
-                }
-                else if(user_data.error.code == 2)
-                {
-                    $('#text').addClass('alert alert-warning').text(user_data.error.message);
-                }
-                else
-                {
-                    $('#text').addClass('alert alert-info').text(user_data.error.message);
-                }
-                return false;
+                //$('#user-form-modal').modal('hide');
+                myError(user_data.error.message);
             }//*/
         }
     });
 }
 
-function setData(id, act)
+function setData(ids, act)
 {
-    $('#user_id').val(id);
-    $('#user_act').val(act);
-    
-    $("#confirm").modal('show');
-    
-    if(typeof id == 'string')
+    if(ids == '')
     {
-        $('#confirm_text').text('Delete user - '+$('#user_row_'+id).children('td').eq(1).text()+'??');
+        myError('ID is empty ((');
+    }
+    else if(act !== 'del')
+    {
+        myError('ACTION is wrong ((');
     }
     else
     {
-        let usersName = [];
-        id.forEach(element => {
-            usersName.push($('#user_row_'+element).children('td').eq(1).text());
-        });
-        $('#confirm_text').text('Delete users - '+usersName+'??');
-    }
+        $('#user_id').val(ids);
+        $('#user_act').val(act);
+        
+        $("#confirm").modal('show');
+        
+        if(typeof ids == 'string')
+        {
+            $('#confirm_text').text('Delete user - '+$('#user_row_'+ids).children('td').eq(1).text()+'??');
+        }
+        else
+        {
+            let usersName = [];
+            ids.forEach(element => {
+                usersName.push($('#user_row_'+element).children('td').eq(1).text());
+            });
+            $('#confirm_text').text('Delete users - '+usersName+' ??');
+        }
+    }    
 }
 
 function myConfirm()
@@ -351,21 +335,28 @@ function myConfirm()
     $("#confirm").modal('hide');
     
     let myAction = $('#user_act').val();
-    let userId = $('#user_id').val();
-    userId = userId.split(',');
+    let userIds = $('#user_id').val();
+    userIds = userIds.split(',');
     
-    if(myAction === 'del')
+    //console.log(myAction, userIds.length);
+    if(userIds.length)
     {
-        dellUser(userId);
+        if(myAction === 'del')
+        {
+            dellUser(userIds);
+        }
     }
+    else
+    {
+        myError('ID is empty ((');
+    }    
 }
 
-function dellUser(id)
+function dellUser(ids)
 {    
     const data = {
-        arrId: id
+        arrId: ids
     };
-    //console.log(id);
     
     $.ajax({
         url: 'del.php',
@@ -373,32 +364,23 @@ function dellUser(id)
         dataType: 'text',
         data: data,
         success: function(data){
-            $('#text').addClass('alert alert-info').text(data);            
+            //$('#text').addClass('alert alert-info').text(data);            
             
             const all_data = JSON.parse(data);
-            //console.log(all_data);
             
             if(all_data.error == null || all_data.error == undefined)
             {
-                if(Array.isArray(all_data.user.id))
+                ids.forEach(function(elem)
                 {
-                    all_data.user.id.forEach(function(elem)
-                    {
-                        $('#user_row_'+elem).remove();
-                    });
-                    $('#text').addClass('alert alert-success').text('Users deleted');
-                }
-                else
-                {
-                    $('#text').addClass('alert alert-success').text('User deleted');
-                    $('#user_row_'+all_data.user.id).remove();
-                }
+                    $('#user_row_'+elem).remove();
+                });
+                $('#text').addClass('alert alert-success').text('Users deleted');
             }
             else
             {
                 if(all_data.error.code == 1)
                 {
-                    $('#text').addClass('alert alert-danger').text(all_data.error.message);
+                    myError(all_data.error.message);
                     
                 }
                 else if(all_data.error.code == 2)
@@ -411,5 +393,5 @@ function dellUser(id)
                 }
             }//*/
         }
-    });
+    });//*/
 }

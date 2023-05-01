@@ -15,18 +15,6 @@ if(empty($arrId))
 }
 
 $arResult = $users -> DelUsers($arrId);
-
-if($arResult)
-{
-    $response['error'] = NULL;
-    $response['user']['id'] = $arrId;
-    echo json_encode($response);
-    die();
-}
-else
-{
-    $response['error']['code'] = 1;
-    $response['error']['message'] = 'Cant delete Users((';
-    echo json_encode($response);
-    die();
-}
+//var_dump($arResult); exit;
+echo json_encode($arResult);
+die();

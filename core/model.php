@@ -46,22 +46,44 @@ class CModel {
         return $arUsers;
     }
     
-    public function DelUsers($arrId)
-    {   
+    public function DelUsers($ids)
+    {
+        $count_users = count($ids);
         
-        if(is_array($arrId))
+        if(is_array($ids))
         {
-            $arrId = implode(',', $arrId);
+            $ids = implode(',', $ids);
         }
         else
         {
-            $arrId = intval($arrId);
+            $ids = intval($ids);
         }
-        $sql = "DELETE FROM users WHERE id IN ($arrId)";
-        //echo $sql; exit;
-        $res = mysqli_query($this->link, $sql);
         
-        return $res;
+        $sql = "SELECT COUNT(*) FROM users WHERE id IN ($ids)";
+        $res = mysqli_query($this->link, $sql);
+        $res = mysqli_fetch_row($res);
+        //echo "$count_users - $res[0]"; exit;
+        if($res[0] != $count_users)
+        {
+            $res_return['error']['code'] = 1;
+            $res_return['error']['message'] = 'Cant find user for delete((';
+        }
+        else
+        {
+            $sql = "DELETE FROM users WHERE id IN ($ids)";
+            $res = mysqli_query($this->link, $sql);
+            if($res)
+            {                
+                $res_return['error'] = null;
+            }
+            else
+            {
+                $res_return['error']['code'] = 1;
+                $res_return['error']['message'] = 'Cant delete user((';
+            }            
+        }
+        
+        return $res_return;
     }
     
     public function GetUserData($id)
@@ -89,16 +111,42 @@ class CModel {
         return $res;
     }
     
-    public function UpdateUsersStatus($arrId, $status)
+    public function UpdateUsersStatus($ids, $status)
     {
-        if(is_array($arrId))
+        $count_users = count($ids);
+        if(is_array($ids))
         {
-            $arrId = implode(',', $arrId);
-            $sql = "UPDATE users SET status = $status WHERE id IN ($arrId)";
-            $res = mysqli_query($this->link, $sql);
+            $ids = implode(',', $ids);
+        }
+        else
+        {
+            $ids = intval($ids);
         }
         
-        return $res;        
+        $sql = "SELECT COUNT(*) FROM users WHERE id IN ($ids)";
+        $res = mysqli_query($this->link, $sql);
+        $res = mysqli_fetch_row($res);
+        //var_dump($res); exit;
+        if($res[0] != $count_users)
+        {
+            $res_return['error']['code'] = 1;
+            $res_return['error']['message'] = 'Cant find user for update((';
+        }
+        else
+        {
+            $sql = "UPDATE users SET status = $status WHERE id IN ($ids)";
+            $res = mysqli_query($this->link, $sql);
+            if($res)
+            {                
+                $res_return['error'] = null;
+            }
+            else
+            {
+                $res_return['error']['code'] = 1;
+                $res_return['error']['message'] = 'Cant update user((';
+            }
+        }
+        return $res_return;        
     }
     
     public function AddUser($params)
