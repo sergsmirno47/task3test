@@ -168,7 +168,7 @@ function sentUserData()
         success: function(data){
             //$('#text').addClass('alert alert-info').append(data);
             //console.log(data);
-
+            
             const user_data = JSON.parse(data);
             //console.log(user_data);
             
@@ -202,7 +202,7 @@ function sentUserData()
                                                   '<td class="text-center align-middle"><i class="fa fa-circle '+(user_data.user.status == 1? '' : 'not-')+'active-circle"></i></td>'+
                                                   '<td class="text-center align-middle">'+
                                                     '<div class="btn-group align-top">'+
-                                                      '<button onclick="getUserData(\''+user_data.user.id+'\')" class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" data-target="#user-form-modal">Edit</button>'+
+                                                      '<button onclick="getUserData(\''+user_data.user.id+'\')" class="btn btn-sm btn-outline-secondary badge" type="button">Edit</button>'+
                                                       '<button onclick="setData(\''+user_data.user.id+'\',\'del\')" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>'+
                                                     '</div>'+
                                                   '</td>'+

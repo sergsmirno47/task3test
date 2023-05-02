@@ -31,7 +31,9 @@ class CModel {
         
         if(mysqli_connect_errno()){
             echo "can't connect: ".mysqli_connect_error();
-        }        
+        }
+        mysqli_query($this->link, 'SET NAMES utf8 COLLATE utf8_general_ci');
+        //$this->query('SET CHARACTER SET utf8');       
     }    
     
     public function ShowUsers()
@@ -96,19 +98,45 @@ class CModel {
     }
     
     public function UpdateUserData($params)
-    {        
-        $first_name = mysqli_real_escape_string($this->link, trim($params['first-name']));
-        $last_name = mysqli_real_escape_string($this->link,trim($params['last-name']));
-        
-        $sql = "UPDATE users SET first_name='$first_name',
-                                last_name='$last_name',
-                                status=".$params['user-status'].",
-                                role=".$params['user-role']." 
-                                WHERE id = ".$params['user-id-hidd']." LIMIT 1";
-
+    {
+        $sql = "SELECT COUNT(*) FROM users WHERE id = ".$params['user-id-hidd'];
         $res = mysqli_query($this->link, $sql);
+        $res = mysqli_fetch_row($res);
+        //var_dump($res); exit;
         
-        return $res;
+        if($res[0])
+        {
+            $first_name = mysqli_real_escape_string($this->link, trim($params['first-name']));
+            $last_name = mysqli_real_escape_string($this->link,trim($params['last-name']));
+            
+            $sql = "UPDATE users SET first_name='$first_name',
+                                    last_name='$last_name',
+                                    status=".$params['user-status'].",
+                                    role=".$params['user-role']." 
+                                    WHERE id = ".$params['user-id-hidd']." LIMIT 1";    
+            $res = mysqli_query($this->link, $sql);
+            
+            if($res)
+            {
+                $res_return['error'] = NULL;
+                $res_return['user']['id'] = $params['user-id-hidd'];
+                $res_return['user']['first_name'] = $params['first-name'];
+                $res_return['user']['last_name'] = $params['last-name'];
+                $res_return['user']['status'] = $params['user-status'];
+                $res_return['user']['role'] = $params['user-role'];
+            }
+            else
+            {
+                $res_return['error']['code'] = 1;
+                $res_return['error']['message'] = 'Cant update User((';
+            }
+        }
+        else
+        {
+            $res_return['error']['code'] = 2;
+            $res_return['error']['message'] = 'user do not exist';
+        }
+        return $res_return;
     }
     
     public function UpdateUsersStatus($ids, $status)

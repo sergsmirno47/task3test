@@ -59,25 +59,9 @@ if($params['user-act-hidd'] == 'upd')
     }
     
     $arResult = $user -> UpdateUserData($params);
-    
-    if($arResult)
-    {
-        $response['error'] = NULL;
-        $response['user']['id'] = $params['user-id-hidd'];
-        $response['user']['first_name'] = $params['first-name'];
-        $response['user']['last_name'] = $params['last-name'];
-        $response['user']['status'] = $params['user-status'];
-        $response['user']['role'] = $params['user-role'];
-        echo json_encode($response);
-        die();
-    }
-    else
-    {
-        $response['error']['code'] = 1;
-        $response['error']['message'] = 'Cant update User((';
-        echo json_encode($response);
-        die();
-    }    
+
+    echo json_encode($arResult);
+    die();    
 }
 elseif($params['user-act-hidd'] == 'add')
 {
