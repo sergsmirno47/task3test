@@ -42,10 +42,22 @@ else
 {
     $params['user-status'] = 0;
 }
-$params['user-id-hidd'] = intval($params['user-id-hidd']);
+
 //var_dump($params); exit;
-if($params['user-id-hidd'] && $params['user-act-hidd'] == 'upd')
+if($params['user-act-hidd'] == 'upd')
 {
+    if(empty($params['user-id-hidd']))
+    {
+        $response['error']['code'] = 1;
+        $response['error']['message'] = 'cant fing user ID';
+        echo json_encode($response);
+        die();
+    }
+    else
+    {
+        $params['user-id-hidd'] = intval($params['user-id-hidd']);
+    }
+    
     $arResult = $user -> UpdateUserData($params);
     
     if($arResult)
@@ -65,11 +77,9 @@ if($params['user-id-hidd'] && $params['user-act-hidd'] == 'upd')
         $response['error']['message'] = 'Cant update User((';
         echo json_encode($response);
         die();
-    }
-    
+    }    
 }
-
-if($params['user-act-hidd'] == 'add')
+elseif($params['user-act-hidd'] == 'add')
 {
     $arResult = $user -> AddUser($params);
     //var_dump($arResult); exit;
@@ -92,6 +102,13 @@ if($params['user-act-hidd'] == 'add')
         echo json_encode($response);
         die();
     }
+}
+else
+{
+    $response['error']['code'] = 1;
+    $response['error']['message'] = 'action is wrong';
+    echo json_encode($response);
+    die();
 }
 
 

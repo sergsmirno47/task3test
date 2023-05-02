@@ -75,7 +75,7 @@ $(document).ready(function()
                         data: data,
                         success: function(data)
                         {
-                            $('#text').addClass('alert alert-info').append(data);
+                            //$('#text').addClass('alert alert-info').append(data);
                             
                             $('#text').removeClass();
                             const user_data = JSON.parse(data);
@@ -225,7 +225,8 @@ function sentUserData()
             {
                 if(user_data.error.code == 1)
                 {
-                    $('#text-form-error').addClass('alert alert-danger').text(user_data.error.message);                    
+                    $('#user-form-modal').modal('hide');
+                    myError(user_data.error.message);                   
                 }
                 else if(user_data.error.code == 2)
                 {

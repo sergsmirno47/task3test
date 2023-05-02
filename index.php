@@ -103,7 +103,7 @@ $arResult = $users -> ShowUsers();
                                 
                 <div class="card col-md-4 mt-100" style="margin: 20px 0; padding: 20px;">
                     <div class="btn-group" role="group">
-                        <button type="button" class="user-group-act-add btn btn-info" data-toggle="modal" data-target="#user-form-modal">Add user</button>
+                        <button type="button" class="user-group-act-add btn btn-info" data-toggle="modal" data-target="#user-form-modal">Add user</button><!-- data-toggle="modal" data-target="#user-form-modal" -->
                         
                         <select name="user-group-act-select" class="user-group-act-select custom-select mr-sm-2" style="margin-right: 0 !important;">
                             <option selected > -Please Select- </option>
