@@ -75,7 +75,7 @@ $(document).ready(function()
                         data: data,
                         success: function(data)
                         {                            
-                            $('#text').removeClass().text();
+                            $('#text').removeClass().empty();
                             
                             const user_data = JSON.parse(data);
                             
@@ -147,7 +147,7 @@ function checkboxOpt(el)
 
 function myError(text)
 {
-    $('#text').removeClass().text();
+    $('#text').removeClass().empty();
     $("#confirm_group").modal('show');
     $('#confirm_group_text').text(text);
 }
@@ -170,7 +170,7 @@ function sentUserData()
             
             const user_data = JSON.parse(data);
             
-            $('#text').removeClass().text();
+            $('#text').removeClass().empty();
             $('#text-form-error').removeClass();
             
             if(user_data.error == null || user_data.error == undefined)
@@ -363,7 +363,7 @@ function dellUser(ids)
             //$('#text').addClass('alert alert-info').text(data);            
             
             const all_data = JSON.parse(data);
-            $('#text').text();
+            $('#text').empty();
             if(all_data.error == null || all_data.error == undefined)
             {
                 ids.forEach(function(elem)
