@@ -147,6 +147,7 @@ function checkboxOpt(el)
 
 function myError(text)
 {
+    $('#text').removeClass().text();
     $("#confirm_group").modal('show');
     $('#confirm_group_text').text(text);
 }
@@ -169,8 +170,7 @@ function sentUserData()
             
             const user_data = JSON.parse(data);
             
-            $('#text').text();
-            $('#text').removeClass();
+            $('#text').removeClass().text();
             $('#text-form-error').removeClass();
             
             if(user_data.error == null || user_data.error == undefined)
