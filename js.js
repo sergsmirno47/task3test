@@ -74,10 +74,9 @@ $(document).ready(function()
                         dataType: 'text',
                         data: data,
                         success: function(data)
-                        {
-                            //$('#text').addClass('alert alert-info').append(data);
+                        {                            
+                            $('#text').removeClass().text();
                             
-                            $('#text').removeClass();
                             const user_data = JSON.parse(data);
                             
                             if(user_data.error == null || user_data.error == undefined)
@@ -167,11 +166,10 @@ function sentUserData()
         data: data,
         success: function(data){
             //$('#text').addClass('alert alert-info').append(data);
-            //console.log(data);
             
             const user_data = JSON.parse(data);
-            //console.log(user_data);
             
+            $('#text').text();
             $('#text').removeClass();
             $('#text-form-error').removeClass();
             
@@ -281,7 +279,6 @@ function getUserData(id)
             //$('#text').addClass('alert alert-info').append(data);
             
             const user_data = JSON.parse(data);
-            //console.log(user_data);
             
             if(user_data.error == null || user_data.error == undefined)
             {
@@ -292,7 +289,6 @@ function getUserData(id)
             }
             else
             {
-                //$('#user-form-modal').modal('hide');
                 myError(user_data.error.message);
             }//*/
         }
@@ -339,7 +335,6 @@ function myConfirm()
     let userIds = $('#user_id').val();
     userIds = userIds.split(',');
     
-    //console.log(myAction, userIds.length);
     if(userIds.length)
     {
         if(myAction === 'del')
@@ -368,7 +363,7 @@ function dellUser(ids)
             //$('#text').addClass('alert alert-info').text(data);            
             
             const all_data = JSON.parse(data);
-            
+            $('#text').text();
             if(all_data.error == null || all_data.error == undefined)
             {
                 ids.forEach(function(elem)
