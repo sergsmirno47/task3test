@@ -18,13 +18,6 @@ class CModel {
         }
         else
         {
-            $connectData = array(
-                'bdserver' => 'fdb27.biz.nf',
-                'dbuser' => '4301586_task3',
-                'dbname' => '4301586_task3',
-                'dbpass' => 'x1LOqYSd4TD2x',
-            
-            );
         }
         
         $this->link = mysqli_connect($connectData['bdserver'], $connectData['dbuser'], $connectData['dbpass'], $connectData['dbname']);
