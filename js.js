@@ -114,6 +114,40 @@ $(document).ready(function()
         }
     });
     
+    $('#button_save').click(function(){
+        sentUserData();
+    });
+    
+    $("[get-user-data-id]").click(function(){
+        let id = Number($(this).attr('get-user-data-id'));
+        
+        if(id)
+        {
+            getUserData(id);
+        }
+        else
+        {
+            myError('user ID is wrong!!');
+        }
+    });
+    
+    $("[set-user-data-id]").click(function(){
+        let id = Number($(this).attr('set-user-data-id'));
+        
+        if(id)
+        {
+            setData(Number(id), 'del');
+        }
+        else
+        {
+            myError('user ID is wrong!!');
+        }
+    });
+    
+    $('#confirm_yes').click(function(){
+        myConfirm();
+    });
+    
 });
 
 function checkAll()
@@ -150,21 +184,36 @@ function myError(text)
     $('#text').removeClass().empty();
     $("#confirm_group").modal('show');
     $('#confirm_group_text').text(text);
-}
+} 
 
 function sentUserData()
 {   //отримую дані з  форми
-    const userDataForSend = $('#user_info').serialize();
+    //const userDataForSend = $('#user_info').serialize();    
     
+    let id = $('#user_id').val();
+    let act = $('#user_act').val();
+    let firstName = $('#first-name').val();
+    let lastName = $('#last-name').val();
+    let role = $('#inlineFormCustomSelect').val();
+    let status = ($('#toggle_checkbox').prop('checked') === true?1:0);
+    /*
     const data = {
         all_user_data: userDataForSend
     };
+    */
         
     $.ajax({
         url: 'update.php',
         method: 'post',
         dataType: 'text',
-        data: data,
+        data: {
+            'user-id-hidd': id,
+            'user-act-hidd': act,
+            'first-name': firstName,
+            'last-name': lastName,
+            'user-role': role,
+            'user-status': status
+        },
         success: function(data){
             //$('#text').addClass('alert alert-info').append(data);
             
@@ -200,8 +249,8 @@ function sentUserData()
                                                   '<td class="text-center align-middle"><i class="fa fa-circle '+(user_data.user.status == 1? '' : 'not-')+'active-circle"></i></td>'+
                                                   '<td class="text-center align-middle">'+
                                                     '<div class="btn-group align-top">'+
-                                                      '<button onclick="getUserData(\''+user_data.user.id+'\')" class="btn btn-sm btn-outline-secondary badge" type="button">Edit</button>'+
-                                                      '<button onclick="setData(\''+user_data.user.id+'\',\'del\')" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>'+
+                                                      '<button get-user-data-id="'+user_data.user.id+'" class="btn btn-sm btn-outline-secondary badge" type="button">Edit</button>'+ // onclick="getUserData(\''+user_data.user.id+'\')"
+                                                      '<button set-user-data-id="'+user_data.user.id+'" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>'+ //onclick="setData(\''+user_data.user.id+'\',\'del\')"
                                                     '</div>'+
                                                   '</td>'+
                                                 '</tr>');
@@ -297,26 +346,24 @@ function getUserData(id)
 
 function setData(ids, act)
 {
-    if(ids == '')
+    //alert(typeof ids+' '+act);
+    
+    if(!ids)
     {
         myError('ID is empty ((');
     }
-    else if(act !== 'del')
-    {
-        myError('ACTION is wrong ((');
-    }
-    else
+    else if(act == 'del')
     {
         $('#user_id').val(ids);
         $('#user_act').val(act);
         
         $("#confirm").modal('show');
         
-        if(typeof ids == 'string')
+        if(typeof ids == 'number')
         {
             $('#confirm_text').text('Delete user - '+$('#user_row_'+ids).children('td').eq(1).text()+'??');
         }
-        else
+        else if(typeof ids == 'object')
         {
             let usersName = [];
             ids.forEach(element => {
@@ -324,7 +371,15 @@ function setData(ids, act)
             });
             $('#confirm_text').text('Delete users - '+usersName+' ??');
         }
-    }    
+        else
+        {
+            myError('something wrong with ID ((');
+        }
+    }
+    else
+    {
+        myError('something wrong ((');
+    }//*/
 }
 
 function myConfirm()
@@ -334,18 +389,24 @@ function myConfirm()
     let myAction = $('#user_act').val();
     let userIds = $('#user_id').val();
     userIds = userIds.split(',');
+    //alert(userIds);
     
     if(userIds.length)
     {
         if(myAction === 'del')
-        {
+        {   
+            //alert('del+');
             dellUser(userIds);
+        }
+        else
+        {
+            myError('wrong action ((');        
         }
     }
     else
     {
         myError('ID is empty ((');
-    }    
+    }//*/
 }
 
 function dellUser(ids)

@@ -1,5 +1,5 @@
 <?php
-
+require_once 'core/closePages.php';
 require_once 'core/cfg.php';
 
 $user = new CController();

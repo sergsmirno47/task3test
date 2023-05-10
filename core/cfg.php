@@ -10,5 +10,4 @@ function pr($s){
     print_r($s);
     echo '</span></pre><br>';
 }
-
 ?>

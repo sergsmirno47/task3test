@@ -5,6 +5,8 @@ $users = new CController();
 
 $arResult = $users -> ShowUsers();
 
+$role = [1 => 'Admin', 2 => 'User'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,12 +83,12 @@ $arResult = $users -> ShowUsers();
                             </div>
                           </td>
                           <td class="text-nowrap align-middle"><?= $res['first_name'] . ' ' . $res['last_name'] ?></td>
-                          <td class="text-nowrap align-middle"><span><?= $res['role'] == 1? 'Admin' : 'User' ?></span></td>
+                          <td class="text-nowrap align-middle"><span><?= $role[$res['role']] ?></span></td>
                           <td class="text-center align-middle"><i class="fa fa-circle <?= $res['status'] == 1? '' : 'not-' ?>active-circle"></i></td>
                           <td class="text-center align-middle">
                             <div class="btn-group align-top">
-                              <button onclick="getUserData('<?= $res['id'] ?>')" class="btn btn-sm btn-outline-secondary badge" type="button">Edit</button>
-                              <button onclick="setData('<?= $res['id'] ?>','del')" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>
+                              <button get-user-data-id="<?= $res['id'] ?>" class="btn btn-sm btn-outline-secondary badge" type="button">Edit</button>
+                              <button set-user-data-id="<?= $res['id'] ?>" class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>
                             </div>
                           </td>
                         </tr>                     
@@ -136,11 +138,11 @@ $arResult = $users -> ShowUsers();
               <form id="user_info">
                 <div class="form-group">
                   <label for="first-name" class="col-form-label">First Name:</label>
-                  <input name="first-name" type="text" class="form-control" id="first-name">
+                  <input name="first-name" type="text" class="form-control" id="first-name" required />
                 </div>
                 <div class="form-group">
                   <label for="last-name" class="col-form-label">Last Name:</label>
-                  <input name="last-name" type="text" class="form-control" id="last-name">
+                  <input name="last-name" type="text" class="form-control" id="last-name" required />
                 </div>                
                 
                 <div class="input-row">
@@ -168,7 +170,7 @@ $arResult = $users -> ShowUsers();
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button onclick="sentUserData()" type="button" class="btn btn-primary">Save</button>
+              <button id="button_save" type="button" class="btn btn-primary">Save</button>
             </div>
           </div>
         </div>
@@ -187,7 +189,7 @@ $arResult = $users -> ShowUsers();
             <p id="confirm_text"></p>
           </div>
           <div class="modal-footer">
-            <button id="confirm_yes" onclick="myConfirm()" type="button" class="btn btn-primary">Confirm</button>
+            <button id="confirm_yes" type="button" class="btn btn-primary">Confirm</button>
             <button id="confirm_no" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>

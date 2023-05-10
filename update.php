@@ -1,11 +1,12 @@
 <?php
-
+require_once 'core/closePages.php';
 require_once 'core/cfg.php';
 
 $user = new CController();
 //var_dump($_POST); exit;
-$params = array();
-parse_str($_POST['all_user_data'], $params);
+$params = $_POST;
+//parse_str($_POST, $params);
+//var_dump($params); exit;
 
 $params['first-name'] = trim($params['first-name']);
 if(empty($params['first-name']))
@@ -34,14 +35,7 @@ else
 {
     $params['user-role'] = intval($params['user-role']);
 }
-if($params['user-status'] == 'on')
-{
-    $params['user-status'] = 1;
-}
-else
-{
-    $params['user-status'] = 0;
-}
+$params['user-status'] = intval($params['user-status']);
 
 //var_dump($params); exit;
 if($params['user-act-hidd'] == 'upd')
