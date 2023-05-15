@@ -53,7 +53,6 @@ class CController {
         
         return $result;
     }
-    
 }
 
 ?>

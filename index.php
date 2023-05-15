@@ -95,8 +95,7 @@ $role = [1 => 'Admin', 2 => 'User'];
                         
                         <?php                                
                             }
-                          ?>                       
-                        
+                          ?>                        
                         
                       </tbody>
                     </table>
@@ -196,7 +195,6 @@ $role = [1 => 'Admin', 2 => 'User'];
       </div>
     </div>
     
-    
     <div id="confirm_group" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -215,7 +213,6 @@ $role = [1 => 'Admin', 2 => 'User'];
         </div>
       </div>
     </div>
-    
     
     </div>
   </div>

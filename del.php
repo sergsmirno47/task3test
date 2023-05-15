@@ -14,6 +14,7 @@ if(empty($arrId))
     exit();
 }
 
+//var_dump($arrId); exit;
 $arResult = $users -> DelUsers($arrId);
 //var_dump($arResult); exit;
 echo json_encode($arResult);

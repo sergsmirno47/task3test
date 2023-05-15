@@ -346,8 +346,6 @@ function getUserData(id)
 
 function setData(ids, act)
 {
-    //alert(typeof ids+' '+act);
-    
     if(!ids)
     {
         myError('ID is empty ((');

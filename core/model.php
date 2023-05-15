@@ -18,6 +18,10 @@ class CModel {
         }
         else
         {
+            $connectData = array(
+                
+                
+            );
         }
         
         $this->link = mysqli_connect($connectData['bdserver'], $connectData['dbuser'], $connectData['dbpass'], $connectData['dbname']);
@@ -48,6 +52,7 @@ class CModel {
         if(is_array($ids))
         {
             $ids = implode(',', $ids);
+            $ids = mysqli_real_escape_string($this->link, strip_tags(trim($ids)));
         }
         else
         {
@@ -99,8 +104,8 @@ class CModel {
         
         if($res[0])
         {
-            $first_name = mysqli_real_escape_string($this->link, trim($params['first-name']));
-            $last_name = mysqli_real_escape_string($this->link,trim($params['last-name']));
+            $first_name = mysqli_real_escape_string($this->link, strip_tags($params['first-name']));
+            $last_name = mysqli_real_escape_string($this->link, strip_tags($params['last-name']));
             
             $sql = "UPDATE users SET first_name='$first_name',
                                     last_name='$last_name',
@@ -132,12 +137,34 @@ class CModel {
         return $res_return;
     }
     
+    public function AddUser($params)
+    {
+        $first_name = mysqli_real_escape_string($this->link, strip_tags($params['first-name']));
+        $last_name = mysqli_real_escape_string($this->link, strip_tags($params['last-name']));
+        
+        $sql = "INSERT INTO users (first_name, last_name, status, role) 
+                                VALUES 
+                                ('$first_name', '$last_name', ".$params['user-status'].", ".$params['user-role'].")";
+        //https://qna.habr.com/q/577117 INSERT INTO ulica (nameulicadop,guid) VALUES ('1 ул','f2ddb1ab-5f51-429a-8a99-84cc9bc124af') RETURNING id,guid;
+        $res = mysqli_query($this->link, $sql);
+        
+        if($res)
+        {
+            $sql = "SELECT * FROM users WHERE id = LAST_INSERT_ID()";
+            $res = mysqli_query($this->link, $sql);
+            $inf_last_user = mysqli_fetch_array($res, MYSQLI_ASSOC);
+        }
+        
+        return $inf_last_user;
+    }
+    
     public function UpdateUsersStatus($ids, $status)
     {
         $count_users = count($ids);
         if(is_array($ids))
         {
             $ids = implode(',', $ids);
+            $ids = mysqli_real_escape_string($this->link, strip_tags(trim($ids)));
         }
         else
         {
@@ -169,28 +196,6 @@ class CModel {
         }
         return $res_return;        
     }
-    
-    public function AddUser($params)
-    {
-        $first_name = mysqli_real_escape_string($this->link, trim($params['first-name']));
-        $last_name = mysqli_real_escape_string($this->link,trim($params['last-name']));
-        
-        $sql = "INSERT INTO users (first_name, last_name, status, role) 
-                                VALUES 
-                                ('$first_name', '$last_name', ".$params['user-status'].", ".$params['user-role'].")";
-
-        $res = mysqli_query($this->link, $sql);
-        
-        if($res)
-        {
-            $sql = "SELECT * FROM users WHERE id = LAST_INSERT_ID()";
-            $res = mysqli_query($this->link, $sql);
-            $inf_last_user = mysqli_fetch_array($res, MYSQLI_ASSOC);
-        }
-        
-        return $inf_last_user;
-    }
-  
 }
 
 ?>

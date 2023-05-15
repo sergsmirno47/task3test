@@ -3,10 +3,8 @@ require_once 'core/closePages.php';
 require_once 'core/cfg.php';
 
 $user = new CController();
-//var_dump($_POST); exit;
+
 $params = $_POST;
-//parse_str($_POST, $params);
-//var_dump($params); exit;
 
 $params['first-name'] = trim($params['first-name']);
 if(empty($params['first-name']))
@@ -63,7 +61,7 @@ elseif($params['user-act-hidd'] == 'add')
     //var_dump($arResult); exit;
     
     if($arResult)
-    {//{ ["id"]=> string(2) "17" ["first_name"]=> string(2) "33" ["last_name"]=> string(2) "33" ["status"]=> string(1) "1" ["role"]=> string(1) "2" }
+    {
         $response['error'] = NULL;
         $response['user']['id'] = $arResult['id'];
         $response['user']['first_name'] = $arResult['first_name'];
